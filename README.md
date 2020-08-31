@@ -1,68 +1,119 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React Hook入门
 
-## Available Scripts
+什么是React hook？
 
-In the project directory, you can run:
+16.8新特性
+- 使用State 在函数组件中
 
-### `yarn start`
+hook
+钩子函数，回调
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+把类组件的一些特性加入到函数组件中
+可以使非Class的情况下，可以使用更多React特性
+完全可选是否使用
+100%向后兼容
+现在可用
+没有计划从React中移除Class
+不影响对React概念理解
+props state context
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+为什么要用hook？
 
-### `yarn test`
+代码更加简洁
+上手更加简单
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+降低了学习成本
+1、生命周期
+2、高阶组件
+3、Redux - 》 mbox
+4、开发体验也非常好，可以在函数组件维护内部的State状态
 
-### `yarn build`
+React上手不容易，主要是？
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1、生命周期难以理解，很难熟练应用
+2、Redux 状态管理，概念非常多，难以理解，尽量看英文文档
+3、高阶组件理解难度较大
+4、很多优秀的解决方案，都在React英文社区
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+React 是单向数据流，自上而下的单项数据流方式（React）
+State/Props改变会引起组件重新渲染，父组件变化影响所有子组件重新渲染
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+class render
+function 整个函数组件重新执行
 
-### `yarn eject`
+函数组件 首字母大写
+返回JSX结构
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+hook 函数组件 有状态的函数组件 State状态管理
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Hook核心概念与应用
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+useState
+每次渲染，函数都会重新执行，函数执行完毕，所有的内存都会释放掉
+useState 在函数内部创建当前函数组件状态，提供修改状态的方法
+useState(0) 设置默认值为0
+更新状态的函数 [count, setCount]
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+useEffect 类似 class组件中的一些生命周期  合并成API
+组件中总会执行一些副作用操作，函数组件中，纯函数，固定的输入props，得到固定的输出
 
-## Learn More
+什么是副作用？
+只想渲染DOM -》 渲染完毕后还想继续执行一段逻辑（副作用）
+没有发生在数据向视图转换过程中的逻辑：
+ajax、访问原生dom对象，定时器
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+需要清除的，不需要清除的
+hook之前，副作用操作都是不能在函数组件中使用
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+useEffect(fn) 组件渲染到屏幕之后才会执行 返回值：fn 一个清除副作用的函数 / 不返回 
 
-### Code Splitting
+一般不需要同步执行，需要同步执行 useLayoutEffect
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+如何清除副作用
+componentWillUnmount - 》 useEffect 返回一个清除副作用的函数
 
-### Analyzing the Bundle Size
+useContext
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+16版本更新了 context api
+定义了发布者模式，主要作用于 爷孙组件之间的传值
+useContext 使用context能力
+提供一个顶层组件
+context 和 userContext 结合使用更容易解决组件之间状态共享问题  - redux
 
-### Making a Progressive Web App
+userReducer
+redux
+userState内部就是通过userReducer实现的
+userState的替代方案  (state, action) => newState
+useReducer接收3个参数：
+1、接收一个函数，reducer对数据的具体操作。
+2、state初始值。
+3、接收一个函数，用于state初始化。
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+useRef
 
-### Advanced Configuration
+16版本中 Object.createRef 创建ref的方法
+{current: ''}
+访问DOM节点、与React元素
+放在useEffect去操作DOM
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+useMemo & useCallback
 
-### Deployment
+useMemo 把创建函数和依赖项数组作为参数传入useMemo
+useCallback 接收内联回调函数和一个依赖项数组
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+计算的缓存，记忆函数，利用了闭包的特性
 
-### `yarn build` fails to minify
+自定义Hook
+逻辑功能相同的片段 -》封装成单独的函数来使用
+自定义 hook 函数 -》 自定义函数
+自定义 hook 中也可以调用官方提供的hook
+use开头，表示只能在函数组件中进行使用
+render props 高阶组件  redux
+复用状态逻辑的方式，而不是复用state本身
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+事实上hook每次调用的时候，都有一个独立的state
+抽离公共代码
+
+Hook使用规则
+1、只能在最顶层使用hook，不要在循环，条件，嵌套函数中调用hook
+2、只在react函数组件中调用hook，自定义hook中调用hook
